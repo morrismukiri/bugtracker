@@ -1,0 +1,168 @@
+<head>
+    <title>Bug Tracker</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="//www.parsecdn.com/js/parse-1.5.0.min.js"></script>
+
+</head>
+<body class="container">
+<!--<ul id="slide-out" class="side-nav fixed">-->
+    <!--<li><a href="#!">First Sidebar Link</a></li>-->
+    <!--<li><a href="#!">Second Sidebar Link</a></li>-->
+<!--</ul>-->
+<!--<a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>-->
+
+<div class="sidenav">{{>sidenav}}</div>
+<div class="main">
+
+
+    <div class="fixed-action-btn" style="">
+        <a class="btn-floating btn-large waves-effect waves-circle btn-floating secondary-content red" id="addBtn">
+            <i class="large material-icons">mode_edit</i>
+        </a>
+        <!--<ul>-->
+        <!--<li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>-->
+        <!--<li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>-->
+        <!--<li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>-->
+        <!--<li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>-->
+        <!--</ul>-->
+    </div>
+    <!--<a class="waves-effect waves-light btn">Add</a>-->
+    <!--<div class="container">-->
+    {{#if showAdd }}
+        {{> addIssue}}
+
+    {{else}}
+        {{#if showEdit}}
+            {{> editIssue}}
+        {{else}}
+            <!--</div>-->
+            <ul class="colection">
+                {{#each issues}}
+                    {{> issue }}
+                {{else}}
+                    <h4>No Bugs reported yet</h4>
+                    {{> addIssue}}
+                {{/each}}
+            </ul>
+        {{/if}}
+    {{/if}}
+</div>
+</body>
+
+<template name="issue">
+    <li class="row collection-item">
+
+        <div class="col s12 m12">
+            <div class="card card-large hoverable">
+                <!--<div class="card-image waves-effect waves-block waves-light">-->
+                <!--<img class="activator" src="images/office.jpg">-->
+                <!--</div>-->
+                <div class="card-content">
+                        <span class="card-title activator grey-text text-darken-4 center-align">{{title}}<i
+                                class="material-icons right" title="View details">more_vert</i></span>
+
+                    <p>Reported by:{{reportedBy}}
+                        <small><em> {{formatDate reportedTime}}</em></small>
+                    </p>
+                    <p>
+                        <!--<a href="#" class="editBug"><span>Edit</span>  </a>-->
+                        {{>modal}}
+                        <br/>
+
+                    <form action="#" class="right">
+                        <p>
+                            <input type="checkbox" id="chk{{_id}}" name="complete" class="completeCheck" checked="{{closed}}"/>
+                            <label for="chk{{_id}}">Complete</label>
+                        </p>
+                    </form>
+                    </p>
+
+
+                </div>
+                <div class="card-reveal">
+                        <span class="card-title grey-text text-darken-4">{{title}}<i
+                                class="material-icons right">close</i></span>
+
+
+                    <p>{{details}}</p>
+                </div>
+            </div>
+        </div>
+    </li>
+</template>
+<template name="addIssue">
+    <!--{{> quickForm collection="db" id="newIssue" type="insert" buttonContent="Save" omitFields="status" }}-->
+        <!--{{#autoForm collection="db"  id="newIssue" type="insert"}}-->
+    <!--<fieldset>-->
+    <!--<legend>add bug</legend>-->
+    <!--{{> afQuickField name='title'}}-->
+    <!--{{> afQuickField name='description'}}-->
+    <!--</fieldset>-->
+        <!--{{/autoForm}}-->
+    <form class="container" id="newIssue">
+        <h5>Report a Bug</h5>
+
+        <div class="input-field col s12 m6 l6">
+            <input name="bugTitle" type="text" class="validate "/><label for="title">Bug Title</label>
+        </div>
+        <div class="input-detailsfield col s12 m6 l6">
+            <label for="description validate">Description</label>
+            <textarea name="details" id="" cols="30" rows="70" class="materialize-textarea"></textarea>
+        </div>
+        <input type="submit" value="Save" id="saveIssue" class="btn align-right"/>
+    </form>
+</template>
+<template name="editIssue">
+    <!--{{> quickForm collection="db"  doc=this id="existingIssue" type="update"}}-->
+
+    <form class="container" id="newIssue">
+        <h5>Edit Bug</h5>
+
+        <div class="input-field col s12 m6 l6">
+            <input name="bugTitle" type="text" class="validate "/><label for="title">Bug Title</label>
+        </div>
+        <div class="input-detailsfield col s12 m6 l6">
+            <label for="description validate">Description</label>
+            <textarea name="details" id="" cols="30" rows="70" class="materialize-textarea"></textarea>
+        </div>
+        <input type="submit" value="Save" id="saveIssue" class="btn align-right"/>
+    </form>
+</template>
+<template name="modal">
+    <a class="modal-trigger waves-effect waves-light btn" href="#issue_{{_id}}">edit</a>
+    <!-- Modal Structure -->
+
+    <div id="issue_{{_id}}" class="modal modal-fixed-footer">
+        <form class="saveEdit">
+            <div class="modal-content">
+                <h4>Edit Issue</h4>
+
+
+                <!--<h5>Edit Bug</h5>-->
+                <div class="input-field col s12">
+                    <input name="bugTitle" type="text" class="validate " value="{{title}}"/><label
+                        for="title">Bug Title</label>
+                </div>
+                <div class="input-detailsfield col s12">
+                    <label for="description validate">Description</label>
+                                    <textarea name="details" id="" cols="30" rows="30"
+                                              class="materialize-textarea">{{details}}</textarea>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="Save"
+                       class="btn right modal-action modal-close saveOnEdit"/>
+                <!--<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Save</a>-->
+            </div>
+        </form>
+    </div>
+</template>
+<template name="sidenav">
+    <ul id="slide-out" class="side-nav fixed">
+        <li><a href="#!" id="current">Current Issues</a></li>
+        <li><a href="#!" id="resoved">Resolved Issues</a></li>
+    </ul>
+    <a href="#" data-activates="slide-out" class="button-collapse btn"><i class="mdi-navigation-menu"></i></a>
+</template>
