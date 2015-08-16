@@ -89,6 +89,7 @@ if (Meteor.isClient) {
                 closeOnClick: false // Close
             });
             Parse.initialize("U0cie5lWDUboGQGADMHbM3tVTRS3OGmiR0yt8twq", "hCt6ubIU3DdO7CR8yUsbrCgawsS0FBWq22fQ9j4v");
+            $('head').append('<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>');
         });
     }
     Template.issue.events({
