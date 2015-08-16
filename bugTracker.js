@@ -86,7 +86,7 @@ if (Meteor.isClient) {
             $(".button-collapse").sideNav({
                 menuWidth: 180, // Default is 240
                 edge: 'left', // Choose the horizontal origin
-                closeOnClick: true // Close
+                closeOnClick: false // Close
             });
             Parse.initialize("U0cie5lWDUboGQGADMHbM3tVTRS3OGmiR0yt8twq", "hCt6ubIU3DdO7CR8yUsbrCgawsS0FBWq22fQ9j4v");
         });
@@ -112,7 +112,12 @@ if (Meteor.isClient) {
         }
     });
     Template.sidenav.events({
-        'click #resoved': function (event) {
+        'click #all': function (event) {
+            event.preventDefault();
+            console.log('showing all issues');
+            Session.set('show','all');
+        },
+        'click #resolved': function (event) {
             event.preventDefault();
             console.log('showing closed issues only');
             Session.set('show','closed');
